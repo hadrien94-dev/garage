@@ -600,7 +600,7 @@ footer{
     <div class="ct-left">
       <div class="ct-eyebrow">Conseils d'experts</div>
       <h3 class="ct-title">Votre contrôle technique approche ?</h3>
-      <p class="ct-desc">On vérifie votre véhicule en amont pour repérer et corriger les points de défaillance. Vous évitez la contre-visite et repartez serein.</p>
+      <p class="ct-desc">On verifies votre véhicule en amont pour repérer et corriger les points de défaillance. Vous évitez la contre-visite et repartez serein.</p>
     </div>
     <div class="ct-btns">
       <a href="tel:0148516726" class="btn-red">
@@ -616,11 +616,11 @@ footer{
       <div>
         <h2 class="horaires-title">Horaires<br><em>d'ouverture</em></h2>
         <table class="horaires-table">
-          <tr><td>Lundi</td><td>08:30 – 12:00 &nbsp;/&nbsp; 14:00 – 18:00 <span class="badge-open">Ouvert</span></td></tr>
-          <tr><td>Mardi</td><td>08:30 – 12:00 &nbsp;/&nbsp; 14:00 – 18:00</td></tr>
-          <tr><td>Mercredi</td><td>08:30 – 12:00 &nbsp;/&nbsp; 14:00 – 18:00</td></tr>
-          <tr><td>Jeudi</td><td>08:30 – 12:00 &nbsp;/&nbsp; 14:00 – 18:00</td></tr>
-          <tr><td>Vendredi</td><td>08:30 – 12:00 &nbsp;/&nbsp; 14:00 – 18:00</td></tr>
+          <tr><td>Lundi</td><td>08:30 – 12:00  /  14:00 – 18:00 <span class="badge-open">Ouvert</span></td></tr>
+          <tr><td>Mardi</td><td>08:30 – 12:00  /  14:00 – 18:00</td></tr>
+          <tr><td>Mercredi</td><td>08:30 – 12:00  /  14:00 – 18:00</td></tr>
+          <tr><td>Jeudi</td><td>08:30 – 12:00  /  14:00 – 18:00</td></tr>
+          <tr><td>Vendredi</td><td>08:30 – 12:00  /  14:00 – 18:00</td></tr>
           <tr><td>Samedi</td><td style="color:var(--body)">Fermé</td></tr>
           <tr><td>Dimanche</td><td style="color:var(--body)">Fermé</td></tr>
         </table>
@@ -688,7 +688,7 @@ footer{
         </div>
         <div class="map-placeholder">
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-          <span>39 bis Rue Saigne, 93100 Montreuil<br><a href="https://maps.google.com/?q=39+bis+Rue+Saigne,+93100+Montreuil" style="color:var(--red-dim);font-size:.75rem">Ouvrir dans Google Maps →</a></span>
+          <span>39 bis Rue Saigne, 93100 Montreuil<br><a href="https://maps.google.com/?q=39+bis+Rue+Saigne+93100+Montreuil" target="_blank" rel="noopener" style="color:var(--red-dim);font-size:.75rem">Ouvrir dans Google Maps →</a></span>
         </div>
         <a href="tel:0148516726" class="call-block">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.86 19.79 19.79 0 01.12 1.22 2 2 0 012.1 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z"/></svg>
@@ -696,7 +696,7 @@ footer{
         </a>
       </div>
 
-      <form class="contact-form-box" id="recallForm" action="https://api.web3forms.com/submit" method="POST" onsubmit="handleFormSubmit(event)">
+      <form class="contact-form-box" id="recallForm" onsubmit="handleFormSubmit(event)">
         <input type="hidden" name="access_key" value="ea3ffc68-de33-4f11-9a79-24b533d7d74f">
         <input type="hidden" name="subject" value="Nouvelle demande de rappel — Garage Auto Sport Montreuil">
         <input type="checkbox" name="botcheck" style="display:none">
@@ -737,7 +737,7 @@ footer{
           Envoyer ma demande
         </button>
         <div class="success-msg" id="successMsg">
-          ✓ &nbsp;Demande reçue — nous vous rappelons sous 2h.
+          ✓  Demande reçue — nous vous rappelons sous 2h.
         </div>
         <p class="fnote">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
@@ -774,7 +774,18 @@ function handleFormSubmit(e){
   }
   var orig = btn.innerHTML;
   btn.style.opacity='.5';btn.disabled=true;btn.innerText='Envoi en cours…';
-  fetch('https://api.web3forms.com/submit',{method:'POST',body:new FormData(form)})
+
+  var formData = new FormData(form);
+  var jsonObject = Object.fromEntries(formData.entries());
+
+  fetch('https://api.web3forms.com/submit',{
+    method:'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    },
+    body: JSON.stringify(jsonObject)
+  })
     .then(r=>r.json())
     .then(d=>{
       if(d.success){
