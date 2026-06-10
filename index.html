@@ -278,13 +278,12 @@ nav.scrolled{padding:.75rem 5vw;box-shadow:0 2px 16px rgba(0,0,0,0.04)}
 .cd-label{font-size:.66rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--red-dim)}
 .cd-val{font-size:.9rem;color:var(--dark);line-height:1.55}
 .cd-sub{font-size:.78rem;color:var(--body);font-style:italic}
-.map-placeholder{
-  width:100%;height:180px;
-  background:var(--bg-card);border:1px solid var(--border);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:.8rem;color:var(--body);font-size:.82rem;text-align:center;padding:1rem;
+.map-wrap{
+  width:100%;height:220px;
+  border:1px solid var(--border);
+  overflow:hidden;
 }
-.map-placeholder svg{color:var(--red);opacity:.6}
+.map-wrap iframe{width:100%;height:100%;border:none}
 .call-block{
   display:inline-flex;align-items:center;gap:.8rem;
   padding:1.1rem 1.8rem;background:var(--dark);color:#fff;
@@ -446,7 +445,7 @@ footer{
     </div>
     <div class="hero-right">
       <div class="hero-img-wrap">
-        <img class="hero-img" src="garage-hero.jpg" alt="Atelier Garage Auto Sport Montreuil" loading="eager">
+        <img class="hero-img" src="https://images.unsplash.com/photo-1616788494707-ec28f08d05a1?w=800&auto=format&fit=crop&q=80" alt="Atelier Garage Auto Sport Montreuil" loading="eager">
       </div>
       <div class="hero-badge-float">
         <span>Ouvert du lundi au vendredi</span>
@@ -686,9 +685,14 @@ footer{
             <span class="cd-sub">Pause déjeuner de 12h00 à 14h00</span>
           </div>
         </div>
-        <div class="map-placeholder">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-          <span>39 bis Rue Saigne, 93100 Montreuil<br><a href="https://maps.google.com/?q=39+bis+Rue+Saigne+93100+Montreuil" target="_blank" rel="noopener" style="color:var(--red-dim);font-size:.75rem">Ouvrir dans Google Maps →</a></span>
+        <div class="map-wrap">
+          <iframe 
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m13!1s0x47e66d45b7f1ec8d%3A0xb3da5bcfbf173df!2s39%20Rue%20Saigne%2C%2093100%20Montreuil!1m3!1m2!1d2.4343111!2d48.8612344!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sfr!2sfr!4v1718012345678!5m2!1sfr!2sfr" 
+            allowfullscreen="" 
+            loading="lazy" 
+            referrerpolicy="no-referrer-when-downgrade"
+            title="Localisation Garage Auto Sport Montreuil">
+          </iframe>
         </div>
         <a href="tel:0148516726" class="call-block">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.86 19.79 19.79 0 01.12 1.22 2 2 0 012.1 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z"/></svg>
@@ -696,7 +700,7 @@ footer{
         </a>
       </div>
 
-      <form class="contact-form-box" id="recallForm" onsubmit="handleFormSubmit(event)">
+      <form class="contact-form-box" id="recallForm" action="https://api.web3forms.com/submit" method="POST" onsubmit="handleFormSubmit(event)">
         <input type="hidden" name="access_key" value="d30faa67-b86f-4cb9-890b-c2167e1726ae">
         <input type="hidden" name="subject" value="Nouvelle demande de rappel — Garage Auto Sport Montreuil">
         <input type="checkbox" name="botcheck" style="display:none">
@@ -776,15 +780,10 @@ function handleFormSubmit(e){
   btn.style.opacity='.5';btn.disabled=true;btn.innerText='Envoi en cours…';
 
   var formData = new FormData(form);
-  var jsonObject = Object.fromEntries(formData.entries());
 
   fetch('https://api.web3forms.com/submit',{
     method:'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
-    },
-    body: JSON.stringify(jsonObject)
+    body: formData
   })
     .then(r=>r.json())
     .then(d=>{
